@@ -1,0 +1,27 @@
+{
+  "name": "anatraz",
+  "version": "1.0.0",
+  "description": "Aplicación del control de trazabilidad de la Panadería Infante",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w sqlite3"
+  },
+  "author": "Angel Infante",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^18.1.0",
+    "electron-rebuild": "^3.2.7"
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InfanteMatiaAngel/proyecto_asir.git"
+  },
+  "bugs": {
+    "url": "https://github.com/InfanteMatiaAngel/proyecto_asir/issues"
+  },
+  "homepage": "https://github.com/InfanteMatiaAngel/proyecto_asir#readme"
+}
