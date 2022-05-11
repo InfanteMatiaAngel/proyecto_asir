@@ -7,9 +7,10 @@
 
 
 
-let main = document.getElementById('main');
-let add_produccion = document.getElementById('add_produccion');
 
+/*let main = document.getElementById('main');
+
+let add_produccion = document.getElementById('add_produccion');
 add_produccion.onclick = function(){
     console.log(add_produccion.value);
 }
@@ -37,7 +38,7 @@ add_producto.onclick = function(){
 //Variables para insertar el HTML
         // ---- VENTANA DE AÑADIR PROVEEDORES ----//
 
-let win_proveedor = `    <form id="win_add_proveedor">
+let win_proveedor = `    <section id="win_add_proveedor">
 <label for="prov_nombre">Nombre</label>
 <input type="text" name="prov_nombre" id="prov_nombre">
 
@@ -64,7 +65,7 @@ let win_proveedor = `    <form id="win_add_proveedor">
 
 <button id="btnAddProveedor"> Registrar </button>
 
-</form>`
+</section>`
 
         // ---- VENTANA DE AÑADIR MATERIAS PRIMAS ----//
 let win_materia_prima = `      <form id="win_add_materia_prima">
@@ -85,3 +86,52 @@ let win_materia_prima = `      <form id="win_add_materia_prima">
 </form>`
 
 //------------------------------------------------------//
+//variables para añadir proveedor
+let prov_nombre
+let cif
+let tipo_via
+let via
+let numero
+let codigo_postal
+let localidad
+let provincia
+let btnAddProveedor
+btnAddProveedor = document.getElementById("btnAddProveedor")
+$('#main').on('click','#btnAddProveedor',function(e){
+    console.log("botón pulsado")
+    prov_nombre = document.getElementById("prov_nombre")
+    cif = document.getElementById("cif")
+    tipo_via = document.getElementById("tipo_via")
+    via = document.getElementById("via")
+    numero = document.getElementById("numero")
+    codigo_postal = document.getElementById("codigo_postal")
+    localidad = document.getElementById("localidad")
+    provincia = document.getElementById("provincia")
+    btnAddProveedor = document.getElementById("btnAddProveedor")
+    const proveedor = {
+        nombre:prov_nombre.value,
+        cif:cif.value,
+        tipo_via:tipo_via.value,
+        via:via.value,
+        numero:numero.value,
+        codigo_postal:codigo_postal.value,
+        localidad:localidad.value,
+        provincia:provincia.value
+    }
+    window.proveedorAdd.insertProveedor(proveedor);
+})
+/*btnAddProveedor.onclick =  function(){
+    console.log("botón pulsado")   
+   
+    /*const proveedor = {
+        nombre:prov_nombre.value,
+        cif:cif.value,
+        tipo_via:tipo_via.value,
+        via:via.value,
+        numero:numero.value,
+        codigo_postal:codigo_postal.value,
+        localidad:localidad.value,
+        provincia:provincia.value
+    }
+    ipcRenderer.invoke('addProveedor', proveedor);
+}*/

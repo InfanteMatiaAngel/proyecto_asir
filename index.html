@@ -9,48 +9,44 @@
 </head>
 <body>
   <header>
-      <img id="logo" src="logo.jpg" alt="anatraz_logo">
+      <img id="logo" src="../logo.png" alt="anatraz_logo">
       <img id="help" src="help" alt="ayuda">
       <span id="reloj"></span>
   </header>
-  <form id="menu" name="menu">
-        <fieldset name="add">
-            <legend>Añadir</legend>
-
-            <input type="radio" name="add" id="add_produccion" value="add_produccion">
-            <label for="add_produccion">Producción</label><br>
-
-            <input type="radio" name="add" id="add_mercancia" value="add_mercancia">
-            <label for="add_mercancia">Mercancía</label><br>
-
-            <input type="radio" name="add" id="add_proveedor" value="add_proveedor">
-            <label for="add_proveedor">Proveedor</label><br>
-
-            <input type="radio" name="add" id="add_materia_prima" value="add_materia_prima">
-            <label for="add_materia_prima">Materia Prima</label><br>
-        
-            <input type="radio" name="add" id="add_producto" value="add_producto">
-            <label for="add_producto">Producto</label>
-        </fieldset>
-
-        <fieldset name="query">
-            <legend>Consultar</legend>
-
-            <input type="radio" name="qry" id="qry_produccion" value="qry_produccion">
-            <label for="qry_produccion">Producción</label> <br>
-
-            <input type="radio" name="qry" id="qry_almacen" value="qry_almacen">
-            <label for="qry_almacen">Mercancía</label>
-        </fieldset>
-          
-  </form>
   <main id="main">
-
-
-
+    <section id="produccion">
+        <figure>
+            <img src="" alt="">
+            <figcaption>Produccion</figcaption>
+        </figure>
+    </section>
+    <section id="almacen">
+        <figure>
+            <img src="" alt="">
+            <figcaption>Almacén</figcaption>
+        </figure>
+    </section>
+    <section id="producto">
+        <figure>
+            <img src="" alt="">
+            <figcaption>Productos</figcaption>
+        </figure>
+    </section>
+    <section id="proveedores">
+        <figure>
+            <img src="" alt="">
+            <figcaption>Proveedores</figcaption>
+        </figure>
+    </section>
+    <section id="materiaPrima">
+        <figure>
+            <img src="" alt="">
+            <figcaption>Materias Primas</figcaption>
+        </figure>
+    </section>
   </main>
 
-
+  <script src="./jquery.js"></script>
   <script src="./renderer.js"></script>
 </body>
 </html>

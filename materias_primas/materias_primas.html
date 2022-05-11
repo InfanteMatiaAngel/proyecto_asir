@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="materias_primas.css">
+    <title>Materias Primas</title>
+</head>
+<body>
+    <form id="addMateriaPrima">
+        <select name="tipo" id="tipo">
+            <option>Seleccione un tipo</option>
+        </select>
+        <button type="button" class="add" id="addTipo">+</button>
+        <select name="marca" id="marca">
+            <option>Seleccione una marca</option>
+        </select>
+        <button type="button" class="add" id="addMarca">+</button>
+        <label for="unidad">Unidad</label>
+        <input type="text" name="unidad" id="unidad">
+        <button id="btnInsertMp">Registrar</button>
+    </form>
+    <section id="insert">
+        <form id="formInsertTipo">
+            <input type = "text" id = "mp_tipo" name = "mp_tipo">
+            <button id="insertTipo">Añadir</button>
+        </form>
+        <form id="formInsertMarca">
+            <input type="text" id="mp_marca" name="mp_marca" placeholder="Escribe aquí la marca del producto">
+            </select>
+            <button id="btnInsertMarca">Añadir</button>
+        </form>
+
+    </section>
+    <section id="showMP"></section>
+
+    <script src="mp.js"></script>
+</body>
+</html>

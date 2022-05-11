@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="proveedor.css">
+    <title>Proveedores</title>
+</head>
+<body>
+    <form id="addProveedor">
+        <table>
+            <tr>
+                <th><label for="prov_nombre">Nombre</label></th>
+                <th><label for="cif">CIF</label></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="prov_nombre" id="prov_nombre"></td>
+                <td><input type="text" name="cif" id="cif"></td>
+            </tr>
+            <tr>
+                <th><label for="tipo_via">Tipo de Vía</label></th>
+                <th><label for="via">Vía</label></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="tipo_via" id="tipo_via"></td>
+                <td><input type="text" name="via" id="via"></td>
+            </tr>
+            <tr>
+                <th><label for="numero">Número</label></th>
+                <th><label for="codigo_postal">Código Postal</label></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="numero" id="numero"></td>
+                <td><input type="text" name="codigo_postal" id="codigo_postal"></td>
+            </tr>
+            <tr>
+                <th><label for="localidad">Localidad</label></th>
+                <th><label for="provincia">Provincia</label></th>
+            </tr>
+            <tr>
+                <td><input type="text" name="localidad" id="localidad"></td>
+                <td><input type="text" name="provincia" id="provincia"></td>
+            </tr>
+        </table>           
+        <button id="btnAddProveedor"> Registrar </button>
+        
+    </form>
+    <main>
+        <p id="show">Mostrar Proveedores</p>
+        <table id="tablaProveedores">
+            <thead>
+                <tr>
+                    <th>CIF</th>
+                    <th>Nombre</th>
+                    <th>Borrar</th>
+                    <th>Editar</th>    
+                </tr>
+            </thead>
+            <tbody id="filasProveedores">
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

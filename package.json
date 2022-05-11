@@ -4,6 +4,7 @@
   "description": "Aplicación del control de trazabilidad de la Panadería Infante",
   "main": "main.js",
   "scripts": {
+    "postinstall": "install-app-deps",
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w sqlite3"
   },
@@ -11,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^18.1.0",
+    "electron-builder": "^23.0.3",
     "electron-rebuild": "^3.2.7"
   },
   "dependencies": {
