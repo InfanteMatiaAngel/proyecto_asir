@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="productos.css">
+    <title>Productos</title>
+</head>
+<body>
+    <form id="addProduct">
+        <label for="nombreProducto">Nombre</label>
+        <input type="text" id="nombreProducto" name="nombreProducto">
+        <label for="envase">Envase</label>
+        <input type="text" name="envase" id="envase">
+        <select name="tipoProducto" id="tipoProducto">
+            <option value="panaderia">Panadería</option>
+            <option value="reposteria">Repostería</option>
+        </select>
+        <button id="btnAddProducto">Registrar</button>
+    </form>
+
+
+<section id="showProducts"></section>
+</body>
+</html>

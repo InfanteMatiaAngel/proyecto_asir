@@ -94,8 +94,7 @@ ipcRenderer.on('proveedores', (event, results) => {
  
  });
 
- async function deleteProveedor(e)
-{
+ async function deleteProveedor(e){
    const idProveedor = { id_proveedor:parseInt(e.target.value)}
    await ipcRenderer.invoke('deleteProveedor', idProveedor)    
 }

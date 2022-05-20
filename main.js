@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
 const { error } = require('console');
-const {app, BrowserWindow, ipcMain, Notification, BrowserView} = require('electron')
+const {app, BrowserWindow, ipcMain, Notification, contextBridge} = require('electron')
 const path = require('path');
 const anatraz = require('./database/database');
 const db = require('./login/logindb');
@@ -9,6 +9,8 @@ const db = require('./login/logindb');
 let proveedorWindow 
 let mainWindow
 let loginWindow
+let materiaPrimaWindow
+let productoWindow
 
 
 //------ Funciones para crear las ventanas -----//
@@ -19,11 +21,15 @@ function createLoginWindow () {
     titleBarStyle: 'hidden',
     width: 400,
     height: 300,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname,'./login/login.js')
     }
   })
   loginWindow.loadFile('./login/login.html')
+  loginWindow.on('ready-to-show', () =>{
+    loginWindow.show()
+  })
 }
 //Ventana principal
 function createWindow () {
@@ -73,11 +79,40 @@ function createProveedorWindow () {
     materiaPrimaWindow.webContents.openDevTools()
   }
 
+  //Ventana productos
+  function createProductoWindow () {
+    productoWindow = new BrowserWindow({
+      parent: mainWindow,
+      modal : true,
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: path.join(__dirname,'./productos/productos.js')
+      }
+    })
+    productoWindow.loadFile('./productos/productos.html')
+    productoWindow.webContents.openDevTools()
+  }
+
+  //Ventana almacen
+  function createAlmacenWindow () {
+    almacenWindow = new BrowserWindow({
+      parent: mainWindow,
+      modal: true,
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: path.join(__dirname,'./almacen/almacen.js')
+      }
+    })
+    almacenWindow.loadFile('./almacen/almacen.html')
+    almacenWindow.webContents.openDevTools();
+  }
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-/*app.whenReady().then(() => {
-  createWindow()*/
+
   app.whenReady().then(() => {
     createLoginWindow()
   app.on('activate', function () {
@@ -111,6 +146,14 @@ ipcMain.handle('winProveedor',() =>{
 ipcMain.handle('winMateriaPrima', () => {
   createMateriaPrimaWindow()
 })
+
+ipcMain.handle('winProductos', () => {
+  createProductoWindow()
+})
+
+ipcMain.handle('winAlmacen', () => {
+  createAlmacenWindow()
+})
 // ----- INTRODUCIR DATOS ----- //
 //Comunicación entre procesos para introducir proveedores
 
@@ -138,6 +181,19 @@ ipcMain.handle('addDistribuir', (event,dist) => {
   addDistribuir(dist)
 })
 
+//Comunicación entre procesos para introducir productos
+ipcMain.handle('addProducto',(event,producto) => {
+  addProducto(producto)
+})
+
+ipcMain.handle('addIngrediente',(event,ingrediente) => {
+  addIngrediente(ingrediente)
+})
+
+//Comunicación entre procesos para introducir almacen
+ipcMain.handle('addAlmacen', (event,mercancia) => {
+  addAlmacen(mercancia)
+})
 // ----- CONSULTAR DATOS ----- //
 //Comunicación entre procesos para consultar proveedores
 ipcMain.handle('getProveedor',() => {
@@ -162,6 +218,19 @@ ipcMain.handle('getMarcas', () => {
 ipcMain.handle('getMateriaPrima', () =>{
   getMateriaPrima();
 })
+
+ipcMain.handle('getProducto', () => {
+  getProductos();
+})
+
+ipcMain.handle('getMateriaPrima2', () => {
+  getMateriaPrima2();
+})
+
+ipcMain.handle('getAlmacen', () =>{
+  getAlmacen();
+})
+
 //Comunicación entre procesos para eliminar proveedores
 ipcMain.handle('deleteProveedor', (event, obj) => {
   deleteProveedor(obj)
@@ -238,8 +307,37 @@ function addTipo(tipo){
   })
 }
 
+//Función para insertar datos en productos
+function addProducto(producto){
+  const {nombre,envase,tipo} = producto
+  anatraz.serialize(function(){
+    const insert_producto = anatraz.prepare("INSERT INTO productos (nombre,envase,tipo) VALUES (?,?,?)")
+    insert_producto.run(nombre,envase,tipo)
+  })
+}
+
+//Función para insertar datos en ingredientes
+function addIngrediente(ingrediente){
+  const {id_producto,id_materia_prima} = ingrediente
+  anatraz.serialize(function(){
+    const insert_ingrediente =  anatraz.prepare("INSERT INTO ingredientes VALUES (?,?)")
+    insert_ingrediente.run(id_producto,id_materia_prima)
+  })
+}
+
+//Función para insertar datos en almacen
+function addAlmacen(mercancia){
+  const {lote,idProveedor,idMateriaPrima,temperatura,cantidad,fechaEntrada,fechaCaducidad} = mercancia
+  anatraz.serialize(function(){
+    const insert_almacen = anatraz.prepare("INSERT INTO almacen VALUES (?,?,?,?,?,?,?)")
+    insert_almacen.run(lote,idProveedor,idMateriaPrima,temperatura,cantidad,fechaEntrada,fechaCaducidad)
+  })
+}
+
 //Funciones para consultar datos en las distintas tablas
 // Función para consultar datos en proveedores
+
+
 function getProveedor(){
   const sqlProveedor = "SELECT * FROM proveedores"
   anatraz.all(sqlProveedor,(error,results) => {
@@ -256,6 +354,7 @@ function getMateriaPrima(){
   })
 }
 
+
 //Función para consultar datos en tipo_materia_prima
 function getTipo(){
   const sqlTipo = "Select id_tipo_materia_prima,tipo FROM tipo_materia_prima"
@@ -264,7 +363,7 @@ function getTipo(){
   })
 }
 
-//Función para consultar datos en marcas
+//Función para consultar un dato en marcas
 function getMarca(nombreMarca) {
   const {nombre_marca} = nombreMarca
   const sqlMarca = "SELECT id_marca FROM marcas WHERE nombre = ?"
@@ -273,10 +372,27 @@ function getMarca(nombreMarca) {
   })
 }
 
+//Función para consultar datos en marcas
 function getMarcas() {
   const sqlMarcas = "SELECT id_marca,nombre FROM marcas"
   anatraz.all(sqlMarcas,(error,results) => {
     materiaPrimaWindow.webContents.send('marcas',results)
+  })
+}
+
+//Función para consultar datos en productos
+function getProductos() {
+  const sqlProducts = "SELECT id_producto,nombre FROM productos ORDER BY tipo,nombre "
+  anatraz.all(sqlProducts,(error,results) => {
+    productoWindow.webContents.send('producto',results)
+  })
+}
+
+//Función para consultar datos en almacen
+function getAlmacen() {
+  const sqlAlmacen = "SELECT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.temperatura, a.fecha_entrada, a.fecha_caducidad, p.nombre as proveedor FROM materias_primas mp JOIN almacen a USING (id_materia_prima) JOIN proveedores p USING (id_proveedor) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima)"
+  anatraz.all(sqlAlmacen,(error,results) => {
+    almacenWindow.webContents.send('almacen',results)
   })
 }
 
@@ -302,3 +418,31 @@ function updateProveedor(proveedor){
 
   })
 }
+
+
+
+
+//
+ipcMain.on('materiasPrimas',(event) => {
+  const sqlMateriaPrima = "SELECT mp.id_materia_prima id_materia_prima,t.tipo ||' ' || m.nombre as materia_prima FROM materias_primas mp JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca)"
+  anatraz.all(sqlMateriaPrima,(error,results) => {
+    event.returnValue = results 
+  })
+   
+}) 
+ipcMain.on('showIngredientes',(event,idProducto) => {
+  const { id_producto } = idProducto
+  console.log(idProducto)
+  const sqlIngrediente = "SELECT t.tipo ||' ' || m.nombre as materia_prima FROM materias_primas JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima) WHERE i.id_producto = ?"
+  anatraz.all(sqlIngrediente,id_producto,(error,results) => {
+    console.log(results)
+    event.returnValue = results
+  }) 
+})
+
+ipcMain.on('proveedores2',(event) => {
+  const sqlProveedor = "SELECT * FROM proveedores"
+  anatraz.all(sqlProveedor,(error,results) => {
+    event.returnValue = results
+  })
+})
