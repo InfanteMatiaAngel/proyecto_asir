@@ -15,7 +15,7 @@ let btnAddProveedor
 
 //Variables para mostrar proveedores
 let filasProveedores
-let btnUpdate
+
 
 window.onload = function() {
     // Elementos DOM del formulario
@@ -41,7 +41,8 @@ window.onload = function() {
             numero:numero.value,
             codigo_postal:codigo_postal.value,
             localidad:localidad.value,
-            provincia:provincia.value
+            provincia:provincia.value,
+            telefono: telefono.value
         }
         ipcRenderer.invoke("addProveedor",proveedor)
     }
@@ -69,14 +70,6 @@ ipcRenderer.on('proveedores', (event, results) => {
                  X
                </button>
               </td>
-              
-              <td>
-                <button class="btnUpdate"   
-                  value="${element.id_proveedor}"> 
-                 ->
-               </button>
-            
-             </td>
           </tr>
        ` 
     });
@@ -87,10 +80,6 @@ ipcRenderer.on('proveedores', (event, results) => {
       boton.addEventListener("click" , deleteProveedor)
    })
  
-  btnUpdate = document.querySelectorAll(".btnUpdate")
-  btnUpdate.forEach(boton =>{
-     boton.addEventListener("click" ,createInputs)
-  })
  
  });
 
@@ -99,10 +88,3 @@ ipcRenderer.on('proveedores', (event, results) => {
    await ipcRenderer.invoke('deleteProveedor', idProveedor)    
 }
 
-function createInputs(e){
-    const idProveedor = { id_proveedor:parseInt(e.target.value)}
-    let celda = e.target.parentElement
-    console.log(celda)
-    let fila = celda.parentElement
-    console.log(fila);
-}

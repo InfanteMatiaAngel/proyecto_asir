@@ -10,34 +10,89 @@ header{
     border-bottom: solid 3px darkblue;
 }
 
+nav{
+    position: fixed;
+    top: 123px;
+    left: 0;
+    width: 5px;
+    height: calc(100% - 123px);
+    background-color: aqua;
+    border-right: darkblue solid 2px;
+    z-index: 99;
+}
+#btnDesplegar{
+    position: fixed;
+    left: 5px;
+    top: 143px;
+    width: 30px;
+    height: 60px;
+    border-top-right-radius: 30%;
+    border-bottom-right-radius: 30%;
+    background-color: aqua;
+    border-top: 2px solid darkblue;
+    border-right: 2px solid darkblue;
+    border-bottom: 2px solid darkblue;
+    cursor: pointer;
+    z-index: 100;
+}
+#btnRecoger{
+    position: fixed;
+    left: 180px;
+    top: 143px;
+    width: 30px;
+    height: 60px;
+    border-top-right-radius: 30%;
+    border-bottom-right-radius: 30%;
+    background-color: aqua;
+    border-top: 2px solid darkblue;
+    border-right: 2px solid darkblue;
+    border-bottom: 2px solid darkblue;
+    cursor: pointer;
+    z-index: 100;
+    display: none;
+}
+nav>p{
+    background-color: blue;
+    width: 160px;
+    color: white;
+    text-align: center;
+    margin: 15px auto;
+    border: solid 2px darkblue ;
+    cursor: pointer;
+    display: none;
+}
+nav>p:first-of-type{
+    margin-top: 100px;
+}
+
 main{
     position: fixed;
-    top: 120px;
-    left: 0;
-    width: 100%;
+    top: 123px;
+    left: 35px;
+    width: calc(100% - 35px);
     height: calc(100% - 120px);
     text-align: center;
     overflow-y: auto;
 }
-section{
+article{
     display: inline-block;
     width: 200px;
-    height: 250px;
+    height: 100px;
     background-color: blue;
     text-align: center;
     margin: 20px; 
     cursor: pointer;   
 }
-figure{
-    display: block;
-    position: relative;
+article>p{
+    display: inline-block;
+    /*position: relative;
     top: 10px;
     left: 10px;
     width: 180px;
     height: 230px;
-    margin: 0;
+    margin: 0;*/
 }
-figure>img{
+/*figure>img{
     position: absolute;
     top: 10px;
     left: 10px;
@@ -51,5 +106,7 @@ figcaption{
     width: 156px;
     height: 26px;
     border: solid 2px darkblue;
-}
+}*/
+
+
 /* Add styles here to customize the appearance of your app */

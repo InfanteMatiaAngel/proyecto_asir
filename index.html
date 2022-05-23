@@ -13,40 +13,39 @@
       <img id="help" src="help" alt="ayuda">
       <span id="reloj"></span>
   </header>
+  <img src="./src/img/right.svg" alt="desplegar" id="btnDesplegar">
+  <img src="./src/img/left.svg" alt="recoger" id="btnRecoger">
+  <nav>
+      <p id="almacen">Almacén</p>
+      <p id="producto">Productos</p>
+      <p id="proveedores">Proveedores</p>
+      <p id="materiaPrima">Materias Primas</p>
+  </nav>
   <main id="main">
-    <section id="produccion">
-        <figure>
-            <img src="" alt="">
-            <figcaption>Produccion</figcaption>
-        </figure>
+    <section id="addProduccion">
+        <p id="pAddProduccion">
+            <button id="btnAddProduccion">Añadir Producción</button>
+        </p>
+        <div id="listaProductos"></div>
+        
     </section>
-    <section id="almacen">
-        <figure>
-            <img src="" alt="">
-            <figcaption>Almacén</figcaption>
-        </figure>
-    </section>
-    <section id="producto">
-        <figure>
-            <img src="" alt="">
-            <figcaption>Productos</figcaption>
-        </figure>
-    </section>
-    <section id="proveedores">
-        <figure>
-            <img src="" alt="">
-            <figcaption>Proveedores</figcaption>
-        </figure>
-    </section>
-    <section id="materiaPrima">
-        <figure>
-            <img src="" alt="">
-            <figcaption>Materias Primas</figcaption>
-        </figure>
+    <section id="filtros"></section>
+    <section id="scRegistros">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Fecha de Producción</th>
+                    <th>Fecha de Caducidad</th>
+                    <th>Lote de Producción</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="registros"></tbody>
+        </table>
     </section>
   </main>
 
-  <script src="./jquery.js"></script>
   <script src="./renderer.js"></script>
 </body>
 </html>

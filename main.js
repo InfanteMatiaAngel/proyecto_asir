@@ -194,6 +194,14 @@ ipcMain.handle('addIngrediente',(event,ingrediente) => {
 ipcMain.handle('addAlmacen', (event,mercancia) => {
   addAlmacen(mercancia)
 })
+
+ipcMain.handle('addProduccion',(event,produccion) => {
+  addProduccion(produccion)
+})
+
+ipcMain.handle('addFabricar',(event,fabricar) => {
+  addFabricar(fabricar)
+})
 // ----- CONSULTAR DATOS ----- //
 //Comunicación entre procesos para consultar proveedores
 ipcMain.handle('getProveedor',() => {
@@ -264,10 +272,10 @@ function checkUser(obj){
 
 // Función para insertar datos en proveedores
 function addProveedor(proveedor){
-  const {prov_nombre,cif,tipo_via,via,numero,codigo_postal,localidad,provincia} = proveedor
+  const {prov_nombre,cif,tipo_via,via,numero,codigo_postal,localidad,provincia,telefono} = proveedor
   anatraz.serialize(function(){
-    const insert_proveedor = anatraz.prepare("INSERT INTO proveedores (nombre,cif,tipo_via,calle,numero,codigo_postal,localidad,provincia) VALUES (?,?,?,?,?,?,?,?)")
-    insert_proveedor.run(prov_nombre,cif,tipo_via,via,numero,codigo_postal,localidad,provincia)
+    const insert_proveedor = anatraz.prepare("INSERT INTO proveedores (nombre,cif,tipo_via,calle,numero,codigo_postal,localidad,provincia,telefono) VALUES (?,?,?,?,?,?,?,?,?)")
+    insert_proveedor.run(prov_nombre,cif,tipo_via,via,numero,codigo_postal,localidad,provincia,telefono)
   })
 }
 
@@ -318,19 +326,37 @@ function addProducto(producto){
 
 //Función para insertar datos en ingredientes
 function addIngrediente(ingrediente){
-  const {id_producto,id_materia_prima} = ingrediente
+  const {id_producto,id_materia_prima,cantidad} = ingrediente
   anatraz.serialize(function(){
-    const insert_ingrediente =  anatraz.prepare("INSERT INTO ingredientes VALUES (?,?)")
-    insert_ingrediente.run(id_producto,id_materia_prima)
+    const insert_ingrediente =  anatraz.prepare("INSERT INTO ingredientes VALUES (?,?,?)")
+    insert_ingrediente.run(id_producto,id_materia_prima,cantidad)
   })
 }
 
 //Función para insertar datos en almacen
 function addAlmacen(mercancia){
-  const {lote,idProveedor,idMateriaPrima,temperatura,cantidad,fechaEntrada,fechaCaducidad} = mercancia
+  const {lote,idProveedor,idMateriaPrima,temperatura,cantidad,stock,fechaEntrada,fechaCaducidad} = mercancia
   anatraz.serialize(function(){
-    const insert_almacen = anatraz.prepare("INSERT INTO almacen VALUES (?,?,?,?,?,?,?)")
-    insert_almacen.run(lote,idProveedor,idMateriaPrima,temperatura,cantidad,fechaEntrada,fechaCaducidad)
+    const insert_almacen = anatraz.prepare("INSERT INTO almacen (lote,id_proveedor,id_materia_prima,temperatura,cantidad,stock,fecha_entrada,fecha_caducidad) VALUES (?,?,?,?,?,?,?,?)")
+    insert_almacen.run(lote,idProveedor,idMateriaPrima,temperatura,cantidad,stock,fechaEntrada,fechaCaducidad)
+  })
+}
+
+function addProduccion(produccion){
+  const {idProducto,loteProduccion,cantidad,fechaProduccion,fechaCaducidad} = produccion
+  anatraz.serialize(function(){
+    const insertProduccion = anatraz.prepare("INSERT INTO produccion (id_producto,lote_produccion,cantidad,fecha_produccion,fecha_caducidad) VALUES (?,?,?,?,?)")
+    insertProduccion.run(idProducto,loteProduccion,cantidad,fechaProduccion,fechaCaducidad)
+  })
+}
+
+//Función para insertar datos en fabricar
+function addFabricar(fabricar){
+  const {idProduccion,idAlmacen} = fabricar
+  console.log(fabricar)
+  anatraz.serialize(function(){
+    const insertFabricar = anatraz.prepare("INSERT INTO fabricar (id_produccion,id_almacen) VALUES (?,?)")
+    insertFabricar.run(idProduccion,idAlmacen)
   })
 }
 
@@ -390,7 +416,7 @@ function getProductos() {
 
 //Función para consultar datos en almacen
 function getAlmacen() {
-  const sqlAlmacen = "SELECT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.temperatura, a.fecha_entrada, a.fecha_caducidad, p.nombre as proveedor FROM materias_primas mp JOIN almacen a USING (id_materia_prima) JOIN proveedores p USING (id_proveedor) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima)"
+  const sqlAlmacen = "SELECT DISTINCT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.temperatura, a.fecha_entrada, a.fecha_caducidad, p.nombre as proveedor FROM materias_primas mp JOIN almacen a USING (id_materia_prima) JOIN proveedores p USING (id_proveedor) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima)"
   anatraz.all(sqlAlmacen,(error,results) => {
     almacenWindow.webContents.send('almacen',results)
   })
@@ -415,10 +441,9 @@ function updateProveedor(proveedor){
   const {id_proveedor,prov_nombre,cif,tipo_via,via,numero,codigo_postal,localidad,provincia} = proveedor
   const updateProveedor = "UPDATE proveedores SET nombre = ?,cif = ?,tipo_via = ?,via = ?,numero = ?,codigo_postal = ?,localidad = ?,provincia = ? WHERE id_proveedor = ?"
   anatraz.all(updateProveedor,[prov_nombre,,cif,tipo_via,via,numero,codigo_postal,localidad,provincia,id_proveedor],() =>{
-
+  
   })
 }
-
 
 
 
@@ -435,7 +460,6 @@ ipcMain.on('showIngredientes',(event,idProducto) => {
   console.log(idProducto)
   const sqlIngrediente = "SELECT t.tipo ||' ' || m.nombre as materia_prima FROM materias_primas JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima) WHERE i.id_producto = ?"
   anatraz.all(sqlIngrediente,id_producto,(error,results) => {
-    console.log(results)
     event.returnValue = results
   }) 
 })
@@ -445,4 +469,73 @@ ipcMain.on('proveedores2',(event) => {
   anatraz.all(sqlProveedor,(error,results) => {
     event.returnValue = results
   })
+})
+
+ipcMain.on('productos',(event) => {
+  const sqlProducts = "SELECT id_producto,nombre FROM productos ORDER BY tipo,nombre "
+  anatraz.all(sqlProducts,(error,results) => {
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('findProducto',(event,arg) => {
+  const nombre = arg
+  const sqlProducts = "SELECT id_producto,nombre FROM productos WHERE nombre LIKE ?"
+  anatraz.all(sqlProducts,nombre,(error,results) => {
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('getIngredientes',(event,idProducto) =>{
+  const id_producto = idProducto
+  const sqlFabricar = "SELECT a.id_almacen FROM almacen a JOIN ingredientes i USING (id_materia_prima) WHERE i.id_producto = ? AND a.stock > 0"
+  anatraz.all(sqlFabricar,id_producto,(error,results) => {
+    event.returnValue = results 
+  })
+})
+
+ipcMain.on('getProduccion',(event,idProducto) =>{
+  const id_producto = idProducto
+  const sqlFabricar = "SELECT MAX(id_produccion) as id_produccion FROM produccion WHERE id_producto = ?"
+  anatraz.get(sqlFabricar,id_producto,(error,results) => {
+    event.returnValue = results 
+  })
+})
+
+ipcMain.on('getProducciones',(event) => {
+  const sqlProducciones = "SELECT * FROM producciones"
+  anatraz.all(sqlProducciones,(error,results) => {
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('produccionIngredientes',(event,idProduccion) =>{
+  const id_produccion = idProduccion
+  const sqlIngredientes = "SELECT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.fecha_caducidad,prov.nombre FROM almacen a JOIN proveedores prov USING (id_proveedor) JOIN materias_primas mp USING (id_materia_prima) JOIN marcas m USING (id_marca) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN fabricar f USING (id_almacen) WHERE f.id_produccion = ?"
+  anatraz.all(sqlIngredientes,id_produccion,(error,results) => {
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('getCantidad',(event,idProducto) =>{
+  const id_producto = idProducto
+  const sqlIngredientes = "SELECT id_materia_prima,cantidad FROM ingredientes WHERE id_producto = ?"
+  anatraz.all(sqlIngredientes,id_producto,(error,results) =>{
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('minCaducidad',(event,materiaPrima) =>{
+  const id_materia_prima = materiaPrima
+  const sqlMinCaducidad = "SELECT MIN(fecha_caducidad) as fecha_caducidad FROM almacen WHERE id_materia_prima = ?"
+  anatraz.all(sqlMinCaducidad,id_materia_prima,(error,results) =>{
+    event.returnValue = results
+  })
+})
+
+ipcMain.on('updateStock',(event,ingredient,minCaducidad) =>{
+  const {id_materia_prima,stock} = ingredient
+  const fecha_caducidad = minCaducidad
+  const updateStock = "UPDATE almacen SET stock = stock - ? WHERE id_materia_prima = ? AND fecha_caducidad = ?"
+  anatraz.all(updateStock,(stock,id_materia_prima,fecha_caducidad))
 })

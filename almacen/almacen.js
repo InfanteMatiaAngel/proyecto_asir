@@ -17,13 +17,13 @@ let showMercancia
 
 
 window.onload = function() {
-    getAlmacen()
 
     lote = document.getElementById('lote')
     selectProveedor = document.getElementById('proveedor')
     selectMateriaPrima = document.getElementById('materiaPrima')
     temperatura = document.getElementById('temperatura')
     cantidad = document.getElementById('cantidad')
+    stock = document.getElementById('stock')
     fechaEntrada = document.getElementById('fechaEntrada')
     fechaCaducidad = document.getElementById('fechaCaducidad')
     btnAddMercancia = document.getElementById('btnAddMercancia')
@@ -44,12 +44,14 @@ window.onload = function() {
             idMateriaPrima: selectMateriaPrima.value,
             temperatura: temperatura.value,
             cantidad: cantidad.value,
+            stock: stock.value,
             fechaEntrada: fechaEntrada.value,
             fechaCaducidad: fechaCaducidad.value
         }
         ipcRenderer.invoke('addAlmacen',mercancia)
     }
 
+    getAlmacen()
 
 }
 async function getAlmacen(){

@@ -11,10 +11,11 @@ let materiasPrimas = ipcRenderer.sendSync('materiasPrimas')
 let btnAddIngrediente
 let idProducto
 let selectMateriaPrima
+let cantidad
 let id_producto
 let showIngredientes
 let listaIngredientes
-let hideIngredientes
+let pIngrendientes
 console.log(materiasPrimas);
 
 window.onload = function() {
@@ -58,9 +59,14 @@ function addIngrediente(e){
     let producto = e.target.parentElement
     showIngredientes = e.target
     console.log(showIngredientes)
+    pIngrendientes = document.getElementById('pIngredientes')
 
     if(listaIngredientes){
         listaIngredientes.remove()
+    }
+
+    if(pIngrendientes){
+        pIngrendientes.remove()
     }
 
     idProducto = e.target.value
@@ -68,60 +74,48 @@ function addIngrediente(e){
 
 
         producto.innerHTML += `
+            <p id = 'pIngredientes'>
+                <select id='materiasPrimas'></select>
+                <input type='number' name='cantidad' id='cantidad' placeholder='Cantidad'>
+                <button id='btnAddIngrediente'>Añadir Ingrediente</button>
+            <p>
             <ul id='listaIngredientes'>
-                <li>
-                    <select id='materiasPrimas'></select>
-                    <button id='btnAddIngrediente'>Añadir Ingrediente</button>
-                </li>
             </ul>`
-        /*hideIngredientes = document.querySelectorAll(".hideIngredientes")
-        hideIngredientes.forEach(boton => {
-             addEventListener("click",fnHideIngredientes)
-        })    */
-        let ingredientes = ipcRenderer.sendSync('showIngredientes',id_producto)
-        console.log(ingredientes);
-        listaIngredientes = document.getElementById("listaIngredientes")
-        for(let ingrediente of ingredientes){
-            console.log(ingrediente)
-            listaIngredientes.innerHTML += `<li>${ingrediente.materia_prima}</li>`
-        }
-        selectMateriaPrima = document.getElementById('materiasPrimas')
-        selectMateriaPrima.innerHTML = "<option>Seleccione un ingrediente</option>"
-        btnAddIngrediente = document.getElementById('btnAddIngrediente')
-        btnAddIngrediente.addEventListener("click",insertIngrediente)
 
-        for(let materiaPrima of materiasPrimas){
-            selectMateriaPrima.innerHTML += `<option value=${materiaPrima.id_materia_prima}>${materiaPrima.materia_prima}</option>`
-        }
-        btnIngredientes = document.querySelectorAll(".btnIngredientes")
-        btnIngredientes.forEach(boton =>{
-        boton.addEventListener("click", addIngrediente)
-        })
+        fnShowIngredientes()
 }
 
- /*function fnHideIngredientes(e){
-    //e.target.remove();
-    listaIngredientes.remove();
-    //producto.appendChild = showIngredientes
-    //console.log(showIngredientes)
-    if(hideIngredientes){
-        hideIngredientes.outerHTML = showIngredientes.outerHTML
-    }
-    btnIngredientes = document.querySelectorAll(".btnIngredientes")
-    btnIngredientes.forEach(boton =>{
-        boton.addEventListener("click", addIngrediente)
-    })
-
-}*/
 
 async function insertIngrediente() {
     const ingrediente = {
         id_producto : idProducto,
-        id_materia_prima : selectMateriaPrima.value
+        id_materia_prima : selectMateriaPrima.value,
+        cantidad : cantidad.value
     }
     console.log(ingrediente)
     ipcRenderer.invoke('addIngrediente',ingrediente)
-    addIngrediente()
+    fnShowIngredientes()
+
+}
+
+function fnShowIngredientes() {
+    let ingredientes = ipcRenderer.sendSync('showIngredientes',id_producto)
+    console.log(ingredientes);
+    listaIngredientes = document.getElementById("listaIngredientes")
+    listaIngredientes.innerHTML = ""
+    for(let ingrediente of ingredientes){
+        console.log(ingrediente)
+        listaIngredientes.innerHTML += `<li>${ingrediente.materia_prima} <button id = 'delIngrediente'>X</button></li>`
+    }
+    selectMateriaPrima = document.getElementById('materiasPrimas')
+    selectMateriaPrima.innerHTML = "<option>Seleccione un ingrediente</option>"
+    cantidad = document.getElementById('cantidad')
+    btnAddIngrediente = document.getElementById('btnAddIngrediente')
+    btnAddIngrediente.addEventListener("click",insertIngrediente)
+    for(let materiaPrima of materiasPrimas){
+        selectMateriaPrima.innerHTML += `<option value=${materiaPrima.id_materia_prima}>${materiaPrima.materia_prima}</option>`
+    }
+
 }
 
 
