@@ -55,7 +55,10 @@ function showProductos() {
   for(let producto of getProductos){
     listProductos += `
     <article class='producto' id = ${producto.id_producto}>
-    <p value = ${producto.id_producto}>${producto.nombre}</p>
+      <figure>
+        <img src='./src/img/${producto.id_producto}.jpg' alt='${producto.nombre}'>
+        <figcaption value = ${producto.id_producto}>${producto.nombre}</figcaption>
+      </figure>
     </article>`
   }
   listaProductos.innerHTML += listProductos
@@ -74,9 +77,12 @@ function fnFindProducto(e){
   let findedProduct = ipcRenderer.sendSync('findProducto',arg)
   for(let producto of findedProduct){
     listProductos += `
-  <article class='producto'>
-  <p id = ${producto.id_producto}>${producto.nombre}</p>
-  </article>` 
+    <article class='producto' id = ${producto.id_producto}>
+      <figure>
+        <img src='./src/img/${producto.id}.jpg' alt='${producto.nombre}'>
+        <figcaption value = ${producto.id_producto}>${producto.nombre}</figcaption>
+      </figure>
+    </article>`
   }
      
    listaProductos.innerHTML = listProductos
@@ -98,14 +104,35 @@ function addProduccion(e) {
   let pAddProduccion = document.getElementById('pAddProduccion')
   
   pAddProduccion.innerHTML = `
-    <label for='fechaProduccion'>Fecha de producción</label>
-    <input type='date' name='fechaProduccion' id='fechaProduccion'>
-    <label for='fechaCaducidad'>Fecha de caducidad</label>
-    <input type='date'  name='fechaCaducidad' id='fechaCaducidad'>
-    <label for='cantidad'>Cantidad</label>
-    <input type='number' name='cantidad' id='cantidad'>
-    <button id='btnAddProduccion' type='submit'>Registrar</button>
-  `
+  <form>
+    <table id='tablaAddProduccion'>
+      <thead>
+        <tr>
+          <th>
+            <label for='fechaProduccion'>Fecha de Producción</label>
+          </th>
+          <th>
+            <label for='fechaCaducidad'>Fecha de caducidad</label>
+          </th>
+          <th>
+            <label for='cantidad'>Cantidad</label>
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <input type='date' name='fechaProduccion' id='fechaProduccion'>
+          </td>
+          <td>
+            <input type='date'  name='fechaCaducidad' id='fechaCaducidad'>
+          </td>
+          <td>
+            <input type='number' name='cantidad' id='cantidad'>
+          </td>
+        </tr>
+    </table>
+      <button id='btnAddProduccion' type='submit'>Registrar</button>
+  </form>
+    `
   let fechaProduccion = document.getElementById('fechaProduccion')
   let fechaCaducidad = document.getElementById('fechaCaducidad')
   let cantidad = document.getElementById('cantidad')
@@ -126,7 +153,7 @@ function addProduccion(e) {
     }
     console.log(idProducto)
     ipcRenderer.invoke('addProduccion',produccion)
-    updateStock(idProducto)
+    /*updateStock(idProducto)*/
     insertFabricar(idProducto)
   }
   

@@ -63,9 +63,11 @@ ipcRenderer.on('proveedores', (event, results) => {
           <tr>
              <td>${element.nombre}</td>
              <td>${element.cif}</td>
+             <td>${element.direccion}</td>
+             <td>${element.telefono}</td>
              <td>
                <button class="btnDelete"
-                 value="${element.id_proveedor}"
+                 id="${element.id_proveedor}"
                  > 
                  X
                </button>
@@ -84,7 +86,7 @@ ipcRenderer.on('proveedores', (event, results) => {
  });
 
  async function deleteProveedor(e){
-   const idProveedor = { id_proveedor:parseInt(e.target.value)}
+   const idProveedor = { id_proveedor:parseInt(e.target.id)}
    await ipcRenderer.invoke('deleteProveedor', idProveedor)    
 }
 

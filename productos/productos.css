@@ -1,0 +1,53 @@
+body{
+    background-color: rgb(215, 220, 248);
+    font-size: 24px;
+}
+
+form{
+    text-align: center;
+}
+input,select{
+    width: 160px;
+    font-size: 1rem;
+}
+
+#showProducts{
+    margin-top: 120px;
+    margin-left: 50px;
+}
+
+#btnAddProducto{
+    display: block;
+    margin: 10px auto;
+    width: 200px;
+    background-color: blue;
+    color: white;
+    border-radius: 15px;
+    font-size: 1.5rem;
+}
+
+#btnAddProducto:hover{
+    background-color: darkblue;
+    border: solid 3px black;
+}
+.btnVerde,.btnIngredientes{
+    font-weight: bold;
+    background-color: rgb(85, 250, 85);
+}
+
+.btnVerde:hover,.btnIngredientes:hover{
+    background-color: green;
+    border: solid 2px black;
+    color: white;
+}
+.delIngrediente{
+    background-color: red;
+    width: 35px;
+    border-radius: 15px;
+    color: white;
+}
+
+.delIngrediente:hover{
+    background-color: darkred;
+    border: solid 3px black;
+}

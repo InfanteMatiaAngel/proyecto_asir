@@ -1,4 +1,4 @@
-img{
+header{
     display: block;
     position: fixed;
     top: 0;
@@ -7,6 +7,17 @@ img{
     height: 75px;
     background-color: blue;
     margin: 0;
+    padding: 0;
+    text-align: center;
+}
+img{
+    position: fixed;
+    top: -20px;
+    height: 100px;
+    width: 300px;
+    left: 50px;
+    margin: 0;
+    padding: 0;
 }
 form{
     position: fixed;

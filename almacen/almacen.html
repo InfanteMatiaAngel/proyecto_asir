@@ -9,25 +9,97 @@
 </head>
 <body>
     <form id="addMercancia">
-        <label for="lote">Lote</label>
-        <input type="text" id="lote" name="lote">
-        <label for="proveedor">Proveedor</label>
-        <select name="proveedor" id="proveedor"></select>
-        <label for="materiaPrima">Mercancía</label>
-        <select name="materiaPrima" id="materiaPrima"></select>
-        <label for="temperatura">Temperatura</label>
-        <input type="number" id="temperatura" name="temperatura">
-        <label for="cantidad">Cantidad</label>
-        <input type="number" name="cantidad" id="cantidad">
-        <label for="stock">Stock</label>
-        <input type="number" name="stock" id="stock">
-        <label for="fechaEntrada">Fecha de entrada</label>
-        <input type="date" id="fechaEntrada" name="fechaEntrada">
-        <input type="date" name="fechaCaducidad" id="fechaCaducidad">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2"><h1>Registrar nueva mercancía</h1></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        <label for="lote">Lote</label>
+                    </th>
+                    <th>
+                        <label for="proveedor">Proveedor</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="lote" name="lote">
+                    </td>
+                    <td>
+                        <select name="proveedor" id="proveedor"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="materiaPrima">Mercancía</label>
+                    </th>
+                    <th>
+                        <label for="temperatura">Temperatura</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="materiaPrima" id="materiaPrima"></select>
+                    </td>
+                    <td>
+                        <input type="number" id="temperatura" name="temperatura">    
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="cantidad">Cantidad</label>
+                    </th>
+                    <th>
+                        <label for="stock">Stock</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="number" name="cantidad" id="cantidad">
+                    </td>
+                    <td>
+                        <input type="number" name="stock" id="stock">     
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="fechaEntrada">Fecha de entrada</label>
+                    </th>
+                    <th>
+                        <label for="fechaCaducidad">Fecha de Caducidad</label>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="date" id="fechaEntrada" name="fechaEntrada">
+                    </td>
+                    <td>
+                        <input type="date" name="fechaCaducidad" id="fechaCaducidad">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <button id="btnAddMercancia">Registrar</button>
     </form>
 
 
-<section id="showMercancia"></section>
+<section id="sectionMercancia">
+    <table>
+        <thead>
+            <tr>
+                <th>Materia Prima</th>
+                <th>Lote</th>
+                <th>Fecha de Entrada</th>
+                <th>Fecha de Caducidad</th>
+                <th>Proveedor</th>
+                <th>Temperatura</th>
+            </tr>
+        </thead>
+        <tbody id="showMercancia"></tbody>
+    </table>
+</section>
 </body>
 </html>

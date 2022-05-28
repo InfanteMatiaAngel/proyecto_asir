@@ -1,26 +1,64 @@
+body{
+    background-color: rgb(215, 220, 248);
+}
 form{
     text-align: left;
-    width: 70%;
-    margin: auto;
+    width: 100%;
 }
 table{
     border-collapse: collapse;
+    width: 80%;
+    margin: auto;
 }
 form th{
     font-size: 1.4rem;
-    background-color: rgb(64, 62, 62);
-    color: white;
+    color: rgb(67, 73, 109);
 }
 form td{
     font-size: 1.4rem;
 }
 td>input{
     margin-bottom: 10px;
+    font-size: 1.4rem;
 }
 
-
+td[colspan="2"],th[colspan="2"]{
+    text-align: center;
+}
 button{
-    background-color: rgb(34, 238, 34);
-    width: 150px;
-    font-size: 1.4rem;
+    display: block;
+    margin: 10px auto;
+    width: 200px;
+    background-color: blue;
+    color: white;
+    border-radius: 15px;
+    font-size: 1.5rem;
+}
+button:hover{
+    background-color: darkblue;
+    border: solid 3px black;
+}
+.btnDelete{
+    background-color: red;
+    width: 35px;
+}
+.btnDelete:hover{
+    background-color: darkred;
+    border: solid 3px black;
+}
+#tablaProveedores{
+    text-align: center;
+    margin: auto;
+    width: 80%;
+    border-collapse: collapse;
+    border: solid 1px black;
+}
+
+#tablaProveedores th,#tablaProveedores td{
+    width: 20%;
+    border: 1px solid rgb(85, 85, 85);
+}
+#tablaProveedores th{
+    background-color: rgb(67, 73, 109);
+    color: white;
 }

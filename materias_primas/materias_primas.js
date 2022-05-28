@@ -93,7 +93,7 @@ async function getMateriaPrima() {
 }
 
 ipcRenderer.on('materiasPrimas',(event,results) => {
-    let filaMateriaPrima = ""
+    let filaMateriaPrima = "<h1>Materias Primas</h1>"
     const materias_Primas = results
     materias_Primas.forEach(element => {
         filaMateriaPrima+=`<p>${element.materia_prima}</p>`

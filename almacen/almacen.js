@@ -61,7 +61,16 @@ ipcRenderer.on('almacen',(event,results) => {
     let listMercancias = ""
     const mercancias = results
     mercancias.forEach(mercancia => {
-        listMercancias += `<p>${mercancia.materia_prima} ${mercancia.lote}`
+        listMercancias += `
+            <tr>
+                <td>${mercancia.materia_prima}</td>
+                <td>${mercancia.lote}</td>
+                <td>${mercancia.fecha_entrada}</td>
+                <td>${mercancia.fecha_caducidad}</td>
+                <td>${mercancia.proveedor}</td>
+                <td class='temperatura'>${mercancia.temperatura}</td>
+            </tr>    
+            `
     })
     showMercancia.innerHTML = listMercancias
 })

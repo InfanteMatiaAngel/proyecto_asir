@@ -43,7 +43,7 @@ async function getProductos() {
     ipcRenderer.invoke('getProducto')
 }
 ipcRenderer.on('producto',(event,results) => {
-    let showProducto = ""
+    let showProducto = "<h1>Productos</h1>"
     const productos = results
     productos.forEach(element => {
         showProducto += `<p>${element.nombre} <button id='${element.id_producto}' value=${element.id_producto} class='btnIngredientes'>+</button></p>`
@@ -77,7 +77,7 @@ function addIngrediente(e){
             <p id = 'pIngredientes'>
                 <select id='materiasPrimas'></select>
                 <input type='number' name='cantidad' id='cantidad' placeholder='Cantidad'>
-                <button id='btnAddIngrediente'>Añadir Ingrediente</button>
+                <button id = 'btnAddIngrediente' class = 'btnVerde' >Añadir Ingrediente</button>
             <p>
             <ul id='listaIngredientes'>
             </ul>`
@@ -105,7 +105,7 @@ function fnShowIngredientes() {
     listaIngredientes.innerHTML = ""
     for(let ingrediente of ingredientes){
         console.log(ingrediente)
-        listaIngredientes.innerHTML += `<li>${ingrediente.materia_prima} <button id = 'delIngrediente'>X</button></li>`
+        listaIngredientes.innerHTML += `<li>${ingrediente.materia_prima} <button class = 'delIngrediente'>X</button></li>`
     }
     selectMateriaPrima = document.getElementById('materiasPrimas')
     selectMateriaPrima.innerHTML = "<option>Seleccione un ingrediente</option>"

@@ -1,3 +1,43 @@
+body{
+    background-color: rgb(215, 220, 248);
+    font-size: 24px;
+}
+
 #formInsertTipo,#formInsertMarca{
     display: none;
+}
+
+form{
+    text-align: center;
+}
+.add{
+    font-weight: bold;
+    background-color: rgb(85, 250, 85);
+}
+.add:hover{
+    background-color: green;
+    border: solid 2px black;
+    color: white;
+}
+input,select{
+    width: 180px;
+    font-size: 1rem;
+}
+#btnInsertMp{
+    display: block;
+    margin: 10px auto;
+    width: 200px;
+    background-color: blue;
+    color: white;
+    border-radius: 15px;
+    font-size: 1.5rem;
+}
+
+#btnInsertMp:hover{
+    background-color: darkblue;
+    border: solid 3px black;
+}
+#showMP{
+    margin-top: 120px;
+    margin-left: 50px;
 }

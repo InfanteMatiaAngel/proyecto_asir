@@ -365,7 +365,7 @@ function addFabricar(fabricar){
 
 
 function getProveedor(){
-  const sqlProveedor = "SELECT * FROM proveedores"
+  const sqlProveedor = "SELECT id_proveedor,nombre,cif,tipo_via ||' '||calle||', '||numero||' '||codigo_postal||' '||localidad||' ('||provincia||')' as direccion,telefono FROM proveedores"
   anatraz.all(sqlProveedor,(error,results) => {
     proveedorWindow.webContents.send('proveedores',results)
   })
@@ -416,7 +416,7 @@ function getProductos() {
 
 //Función para consultar datos en almacen
 function getAlmacen() {
-  const sqlAlmacen = "SELECT DISTINCT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.temperatura, a.fecha_entrada, a.fecha_caducidad, p.nombre as proveedor FROM materias_primas mp JOIN almacen a USING (id_materia_prima) JOIN proveedores p USING (id_proveedor) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima)"
+  const sqlAlmacen = "SELECT DISTINCT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.temperatura, strftime('%d-%m-%Y',a.fecha_entrada) fecha_entrada, strftime('%d-%m-%Y',a.fecha_caducidad) fecha_caducidad, p.nombre as proveedor FROM materias_primas mp JOIN almacen a USING (id_materia_prima) JOIN proveedores p USING (id_proveedor) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN marcas m USING (id_marca) JOIN ingredientes i USING (id_materia_prima)"
   anatraz.all(sqlAlmacen,(error,results) => {
     almacenWindow.webContents.send('almacen',results)
   })
@@ -511,7 +511,7 @@ ipcMain.on('getProducciones',(event) => {
 
 ipcMain.on('produccionIngredientes',(event,idProduccion) =>{
   const id_produccion = idProduccion
-  const sqlIngredientes = "SELECT t.tipo ||' ' || m.nombre as materia_prima, a.lote, a.fecha_caducidad,prov.nombre FROM almacen a JOIN proveedores prov USING (id_proveedor) JOIN materias_primas mp USING (id_materia_prima) JOIN marcas m USING (id_marca) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN fabricar f USING (id_almacen) WHERE f.id_produccion = ?"
+  const sqlIngredientes = "SELECT t.tipo ||' ' || m.nombre as materia_prima, a.lote, strftime('%d-%m-%Y',a.fecha_caducidad) fecha_caducidad,prov.nombre FROM almacen a JOIN proveedores prov USING (id_proveedor) JOIN materias_primas mp USING (id_materia_prima) JOIN marcas m USING (id_marca) JOIN tipo_materia_prima t USING (id_tipo_materia_prima) JOIN fabricar f USING (id_almacen) WHERE f.id_produccion = ?"
   anatraz.all(sqlIngredientes,id_produccion,(error,results) => {
     event.returnValue = results
   })
@@ -537,5 +537,5 @@ ipcMain.on('updateStock',(event,ingredient,minCaducidad) =>{
   const {id_materia_prima,stock} = ingredient
   const fecha_caducidad = minCaducidad
   const updateStock = "UPDATE almacen SET stock = stock - ? WHERE id_materia_prima = ? AND fecha_caducidad = ?"
-  anatraz.all(updateStock,(stock,id_materia_prima,fecha_caducidad))
+  anatraz.run(updateStock,(stock,id_materia_prima,fecha_caducidad))
 })
